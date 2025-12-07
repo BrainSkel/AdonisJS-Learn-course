@@ -24,8 +24,19 @@ router.post("/news", ( {request, response} ) => {
 
  router.patch("/news/:id", ( {params} ) => {
     console.log(params);
-     return "patch rotue";
+     return {params};
  });
+
+ router.delete("/news/:id", ( {params} ) => {
+    return {params};
+  }).where("id", {
+    match: /^[0-9]+$/,
+    cast: (id) => Number(id),
+  });
+
+
+
+
 // router.get('/news',({ view }) => {
 //      return view.render('pages/news')
 // });
