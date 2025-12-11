@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
+import vine from '@vinejs/vine';
 
 export default class ArticlesController {
     public async view({ view }: HttpContext) {
@@ -12,8 +13,22 @@ export default class ArticlesController {
     }
 
     public async store({ response, request }: HttpContext) {
-        const { title, content, image } = request.only(['title', 'content', 'image']);
-        await db.table('articles').insert({ title, content, image, created_at: new Date(), updated_at: new Date() });
+        const createArticleSchema =vine.compile(vine.object({
+            title: vine.string(),
+            content: vine.string(),
+            image: vine.string(),
+        }));
+
+        try {
+            const payload = await request.validateUsing(createArticleSchema);
+            await db.table('articles').insert({
+                ... payload,
+                slug:payload.title,
+            });
         return response.redirect().back();
+        } catch (error) {
+            response.badRequest(error.messages);
+        }
+
     }
 }
