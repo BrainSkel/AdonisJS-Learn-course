@@ -8,11 +8,17 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import db from '@adonisjs/lucid/services/db'
 
 router.on('/').render('pages/home')
 
 
-router.on("/news").render("pages/news").as("news.view");
+router.get("/news", async({ view }) => {
+  // fetch data from database
+    const articles = await db.from('articles').select('*');
+    //return articles;
+    return view.render('pages/news', {articles});
+}).as("news.view");
 
 router.post("/news", ( {request, response} ) => {
     const { email, password } = request.body();
