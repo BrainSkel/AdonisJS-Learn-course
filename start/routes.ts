@@ -7,26 +7,27 @@
 |
 */
 
+import ArticlesController from '#controllers/articles_controller';
 import router from '@adonisjs/core/services/router'
 import db from '@adonisjs/lucid/services/db'
 
 router.on('/').render('pages/home')
 
 
-router.get("/news", async({ view }) => {
-  // fetch data from database
-    const articles = await db.from('articles').select('*');
-    //return articles;
-    return view.render('pages/news', {articles});
-}).as("news.view");
+// router.get("/news", async (ctx) => {
+//   return new ArticlesController().view(ctx);
+// }).as("news.view");
 
-router.post("/news", ( {request, response} ) => {
-    const { email, password } = request.body();
-    console.log(email, password);
-    //return {email, password};
-    return response.redirect().toPath('/news');
-}).as("news.create");
+router.get("/news", [ArticlesController, "view"]).as("news.view");
 
+// router.post("/news", ( {request, response} ) => {
+//     const { email, password } = request.body();
+//     console.log(email, password);
+//     //return {email, password};
+//     return response.redirect().toPath('/news');
+// }).as("news.create");
+
+router.get("/news/create", [ArticlesController, "create"]).as("news.create");
 
  router.patch("/news/:id", ( {params} ) => {
     console.log(params);
