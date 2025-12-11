@@ -43,5 +43,5 @@ router.use([
  * the routes or the routes group.
  */
 export const middleware = router.named({
-  
+
 })
