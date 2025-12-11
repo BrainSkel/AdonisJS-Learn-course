@@ -13,21 +13,17 @@ import db from '@adonisjs/lucid/services/db'
 
 router.on('/').render('pages/home')
 
-
-// router.get("/news", async (ctx) => {
-//   return new ArticlesController().view(ctx);
-// }).as("news.view");
-
+/* News */
 router.get("/news", [ArticlesController, "view"]).as("news.view");
 
-// router.post("/news", ( {request, response} ) => {
-//     const { email, password } = request.body();
-//     console.log(email, password);
-//     //return {email, password};
-//     return response.redirect().toPath('/news');
-// }).as("news.create");
-
 router.get("/news/create", [ArticlesController, "create"]).as("news.create");
+
+router.post("/news", async ({ request }) => {
+  // const { title, body } = request.only(['title', 'body']);
+  return request.all();
+}).as("news.store");
+
+
 
  router.patch("/news/:id", ( {params} ) => {
     console.log(params);
