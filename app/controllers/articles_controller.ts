@@ -7,7 +7,13 @@ export default class ArticlesController {
         return view.render('pages/news/news', {articles});
     }
 
-    public async create({ view }: HttpContext) {
+    public create({ view }: HttpContext) {
         return view.render('pages/news/create');
+    }
+
+    public async store({ response, request }: HttpContext) {
+        const { title, content, image } = request.only(['title', 'content', 'image']);
+        await db.table('articles').insert({ title, content, image, created_at: new Date(), updated_at: new Date() });
+        return response.redirect().back();
     }
 }

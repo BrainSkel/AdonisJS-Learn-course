@@ -18,10 +18,8 @@ router.get("/news", [ArticlesController, "view"]).as("news.view");
 
 router.get("/news/create", [ArticlesController, "create"]).as("news.create");
 
-router.post("/news", async ({ request }) => {
-  // const { title, body } = request.only(['title', 'body']);
-  return request.all();
-}).as("news.store");
+router.post("/news", [ArticlesController, "store"]).as("news.store");
+
 
 
 
