@@ -4,7 +4,7 @@ import { createArticleSchema } from '#validators/create_article';
 export default class ArticlesController {
     public async view({ view }: HttpContext) {
         const articles = await db.from('articles').select('*');
-        return view.render('pages/news/news', {articles});
+        return view.render('pages/news/view', {articles});
     }
 
     public create({ view }: HttpContext) {
