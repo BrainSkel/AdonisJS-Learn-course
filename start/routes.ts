@@ -9,9 +9,9 @@
 
 import ArticlesController from '#controllers/articles_controller';
 import router from '@adonisjs/core/services/router'
-import db from '@adonisjs/lucid/services/db'
 
-router.on('/').render('pages/home')
+
+router.on('/').render('pages/home');
 
 /* News */
 router.get("/news", [ArticlesController, "view"]).as("news.view");
