@@ -41,4 +41,9 @@ export default class ArticlesController {
 
         return response.redirect().back();
     }
+
+    public async show({view, params}: HttpContext) {
+        const article = await db.from("articles").where("slug", params.slug).first();
+        return view.render('pages/news/show', {article});
+    }
 }
