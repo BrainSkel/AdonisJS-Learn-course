@@ -1,11 +1,16 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import db from '@adonisjs/lucid/services/db'
 import { createArticleSchema } from '#validators/create_article';
+import Article from '#models/article';
 
 export default class ArticlesController {
+
     public async index({ view }: HttpContext) {
-        const articles = await db.from('articles').select('*');
+        const articles = await Article.all();
         return view.render('pages/news/view', {articles},);
+    }
+        public async show({view, params}: HttpContext) {
+        const articles = await Article.findBy('slug', params.slug);
+        return view.render('pages/news/show', {articles});
     }
 
     public create({ view }: HttpContext) {
@@ -14,36 +19,38 @@ export default class ArticlesController {
 
     public async store({ response, request }: HttpContext) {
 
-            const payload = await createArticleSchema.validate(request.all());
-            await db.table('articles').insert({
-                ... payload,
-                slug:payload.title.replace(/\s+/g, '-').toLowerCase() + '-' + Date.now(),
-            });
+            const payload = await request.validateUsing(createArticleSchema);
+            await Article.create(payload);
+            // await db.table('articles').insert({
+            //     ... payload,
+            //     slug:payload.title.replace(/\s+/g, '-').toLowerCase() + '-' + Date.now(),
+            // });
         return response.redirect().back();
 
     }
 
 
     public async edit({ view, params }: HttpContext) {
-        const { slug } = params;
-        const article = await db.from("articles").where("slug", slug).first();
+        const article = await await Article.findBy('slug', params.slug);
         return view.render('pages/news/edit', { article });
     }
 
+
     public async update( {request, response, params}: HttpContext) {
         const payload = await request.validateUsing(createArticleSchema);
-        await db.from("articles").where('slug', params.slug).update(payload);
+        await Article.query().where('slug', params.slug).update(payload);
         return response.redirect().back();
     }
 
     public async destroy({ params, response }: HttpContext) {
-        await db.from("articles").where("slug", params.slug).delete();
+        const article = await Article
+            .query()
+            .where('slug', params.slug)
+            .firstOrFail();
 
+        await article.delete();
         return response.redirect().back();
     }
+    
 
-    public async show({view, params}: HttpContext) {
-        const article = await db.from("articles").where("slug", params.slug).first();
-        return view.render('pages/news/show', {article});
-    }
 }

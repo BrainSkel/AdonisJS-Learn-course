@@ -1,6 +1,8 @@
 {
   "extends": "@adonisjs/tsconfig/tsconfig.app.json",
   "compilerOptions": {
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "rootDir": "./",
     "outDir": "./build"
   }
