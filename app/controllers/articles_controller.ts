@@ -17,7 +17,7 @@ export default class ArticlesController {
             const payload = await createArticleSchema.validate(request.all());
             await db.table('articles').insert({
                 ... payload,
-                slug:payload.title,
+                slug:payload.title.replace(/\s+/g, '-').toLowerCase() + '-' + Date.now(),
             });
         return response.redirect().back();
 
