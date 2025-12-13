@@ -3,7 +3,7 @@ import db from '@adonisjs/lucid/services/db'
 import { createArticleSchema } from '#validators/create_article';
 
 export default class ArticlesController {
-    public async view({ view }: HttpContext) {
+    public async index({ view }: HttpContext) {
         const articles = await db.from('articles').select('*');
         return view.render('pages/news/view', {articles},);
     }
@@ -36,7 +36,7 @@ export default class ArticlesController {
         return response.redirect().back();
     }
 
-    public async delete({ params, response }: HttpContext) {
+    public async destroy({ params, response }: HttpContext) {
         await db.from("articles").where("slug", params.slug).delete();
 
         return response.redirect().back();
