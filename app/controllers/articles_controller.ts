@@ -30,7 +30,9 @@ export default class ArticlesController {
         return view.render('pages/news/edit', { article });
     }
 
-    public update() {
-        
+    public async update( {request, response, params}: HttpContext) {
+        const payload = await request.validateUsing(createArticleSchema);
+        await db.from("articles").where('slug', params.slug).update(payload);
+        return response.redirect().back();
     }
 }
