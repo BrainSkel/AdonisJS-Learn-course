@@ -22,13 +22,7 @@ router.get("/news/:slug/edit", [ArticlesController, "edit"]).as("news.edit");
 
 router.patch("/news/:slug", [ArticlesController, "update"]).as("news.update");
 
- router.delete("/news/:id", ( {params} ) => {
-    return {params};
-  }).where("id", {
-    match: /^[0-9]+$/,
-    cast: (id) => Number(id),
-  }).as("news.delete");
-
+router.delete("/news/:slug", [ArticlesController, "delete"]).as("news.delete");
 
   //named routes
 //.as("name")

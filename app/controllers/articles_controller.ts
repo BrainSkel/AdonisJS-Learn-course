@@ -35,4 +35,10 @@ export default class ArticlesController {
         await db.from("articles").where('slug', params.slug).update(payload);
         return response.redirect().back();
     }
+
+    public async delete({ params, response }: HttpContext) {
+        await db.from("articles").where("slug", params.slug).delete();
+
+        return response.redirect().back();
+    }
 }
