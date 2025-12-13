@@ -1,0 +1,35 @@
+@include('partials/header')
+<body>
+@include('partials/navbar')
+<h1>Edit a Article</h1>
+
+
+<form action="{{route('news.update', [article.slug])}}" method="POST">
+  {{ csrfField() }}
+  <label for="title">Title:</label>
+  <input type="text" id="title" name="title" value="{{article.title}}" />
+
+  @if(flashMessages.has('inputErrorsBag.title'))
+  <p>{{ flashMessages.get('inputErrorsBag.title') }}</p>
+  @end
+  <br />
+
+  <label for="content">Content:</label>
+  <textarea id="content" name="content" placeholder="Article Content">{{article.content}}</textarea>
+  @if(flashMessages.has('inputErrorsBag.content'))
+  <p>{{ flashMessages.get('inputErrorsBag.content') }}</p>
+  @end
+  <br />
+
+
+  <label for="image">Image:<input type="file" name="image" accept="image/*" /></label>
+  @if(flashMessages.has('inputErrorsBag.image'))
+  <p>{{ flashMessages.get('inputErrorsBag.image') }}</p>
+  @end
+  <br />
+
+  <button type="submit">Submit</button>
+</form>
+
+@include('partials/footer')
+</body>

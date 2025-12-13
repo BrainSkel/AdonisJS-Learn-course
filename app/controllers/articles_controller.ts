@@ -22,4 +22,15 @@ export default class ArticlesController {
         return response.redirect().back();
 
     }
+
+
+    public async edit({ view, params }: HttpContext) {
+        const { slug } = params;
+        const article = await db.from("articles").where("slug", slug).first();
+        return view.render('pages/news/edit', { article });
+    }
+
+    public update() {
+        
+    }
 }

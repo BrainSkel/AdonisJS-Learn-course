@@ -15,18 +15,12 @@ router.on('/').render('pages/home');
 
 /* News */
 router.get("/news", [ArticlesController, "view"]).as("news.view");
-
 router.get("/news/create", [ArticlesController, "create"]).as("news.create");
-
 router.post("/news", [ArticlesController, "store"]).as("news.store");
 
+router.get("/news/:slug/edit", [ArticlesController, "edit"]).as("news.edit");
 
-
-
- router.patch("/news/:id", ( {params} ) => {
-    console.log(params);
-     return {params};
- }).as("news.update");
+router.patch("/news/:slug", [ArticlesController, "update"]).as("news.update");
 
  router.delete("/news/:id", ( {params} ) => {
     return {params};
