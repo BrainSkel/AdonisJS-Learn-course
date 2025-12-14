@@ -18,31 +18,36 @@ const sessionConfig = defineConfig({
    */
   age: '2h',
 
+    /**
+   * The store to use. Make sure to validate the environment
+   * variable in order to infer the store name without any
+   * errors.
+   */
+  store: env.get('SESSION_DRIVER', 'cookie'),
+
+    /**
+   * List of configured stores. Refer documentation to see
+   * list of available stores and their config.
+   */
+  stores: {
+    cookie: stores.cookie(),
+    file: stores.file({ location: app.tmpPath('sessions') }),
+  },
+
   /**
    * Configuration for session cookie and the
    * cookie store
    */
   cookie: {
     path: '/',
-    httpOnly: true,
-    secure: app.inProduction,
+    httpOnly: true ,
+    secure: false,
     sameSite: 'lax',
   },
 
-  /**
-   * The store to use. Make sure to validate the environment
-   * variable in order to infer the store name without any
-   * errors.
-   */
-  store: env.get('SESSION_DRIVER'),
 
-  /**
-   * List of configured stores. Refer documentation to see
-   * list of available stores and their config.
-   */
-  stores: {
-    cookie: stores.cookie(),
-  },
+
+
 })
 
 export default sessionConfig

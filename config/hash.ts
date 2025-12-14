@@ -1,12 +1,13 @@
+// Importing the hash configuration from @adonisjs/hash
 import { defineConfig, drivers } from '@adonisjs/core/hash'
 
 const hashConfig = defineConfig({
-default: 'argon',
+  default: 'argon', // Default hasher
 
   list: {
     argon: drivers.argon2({
-      version: 0x13, // hex code for 19
-      variant: 'id',
+      version: 0x13, // Hex code for Argon2d (Argon2i is the default)
+      variant: 'id', // Argon2id variant is recommended
       iterations: 3,
       memory: 65536,
       parallelism: 4,
@@ -15,8 +16,6 @@ default: 'argon',
     })
   }
 })
-
-
 
 export default hashConfig
 
